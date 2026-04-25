@@ -1,0 +1,18 @@
+{
+  "name": "searchDocs",
+  "description": "Search the documentation for relevant information.",
+  "arguments": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query to run against the docs"
+      }
+    },
+    "required": [
+      "query"
+    ],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-07/schema#"
+  }
+}
