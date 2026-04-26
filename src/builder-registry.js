@@ -18,5 +18,16 @@ Builder.registerComponent(WeatherDashboard, {
       helperText: 'US ZIP code for the OpenWeather 5-day forecast.',
       defaultValue: '90210',
     },
+    {
+      name: 'unit',
+      type: 'string',
+      friendlyName: 'Temperature unit',
+      helperText: 'Choose Fahrenheit (Imperial) or Celsius (Metric).',
+      defaultValue: 'imperial',
+      enum: [
+        { label: 'Imperial (°F)', value: 'imperial' },
+        { label: 'Metric (°C)', value: 'metric' },
+      ],
+    },
   ],
 })

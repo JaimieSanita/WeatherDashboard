@@ -15,6 +15,12 @@ import { WeatherStation } from '@carbon/icons-react'
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 
+/** Formats a temperature value with the correct unit symbol. */
+export function formatTemp(temp, unit) {
+  if (typeof temp !== 'number') return '—'
+  return `${Math.round(temp)}${unit === 'metric' ? '°C' : '°F'}`
+}
+
 /** OpenWeather 5-day / 3-hour `list` grouped by calendar day (up to 5 days). */
 function groupForecastsByDay(list) {
   const byDay = new Map()
@@ -44,7 +50,7 @@ function formatSlotTime(unixSeconds) {
   }).format(new Date(unixSeconds * 1000))
 }
 
-export default function WeatherDashboard({ zip: zipFromBuilder }) {
+export default function WeatherDashboard({ zip: zipFromBuilder, unit = 'imperial' }) {
   const { zip: zipFromRoute } = useParams()
   const zip =
     typeof zipFromBuilder === 'string' && zipFromBuilder.trim() !== ''
@@ -76,7 +82,7 @@ export default function WeatherDashboard({ zip: zipFromBuilder }) {
     const controller = new AbortController()
     const url = `https://api.openweathermap.org/data/2.5/forecast?zip=${encodeURIComponent(
       zip,
-    )},us&units=imperial&appid=${API_KEY}`
+    )},us&units=${unit}&appid=${API_KEY}`
 
     async function load() {
       setLoading(true)
@@ -101,7 +107,7 @@ export default function WeatherDashboard({ zip: zipFromBuilder }) {
 
     load()
     return () => controller.abort()
-  }, [zip])
+  }, [zip, unit])
 
   const headingSubtitle = useMemo(() => {
     if (!zip) return 'No ZIP code configured.'
@@ -185,7 +191,7 @@ export default function WeatherDashboard({ zip: zipFromBuilder }) {
                                   />
                                 )}
                                 <p className="cds--type-body-compact-01">
-                                  {typeof temp === 'number' ? `${Math.round(temp)}°F` : '—'}
+                                  {formatTemp(temp, unit)}
                                 </p>
                                 <p className="cds--type-caption-01">{desc}</p>
                               </Stack>
