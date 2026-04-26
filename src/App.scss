@@ -2,3 +2,8 @@
   min-height: 100vh;
   padding: 2rem;
 }
+
+.cds--accordion__heading {
+  flex-direction: column !important;
+  align-items: stretch !important;
+}
